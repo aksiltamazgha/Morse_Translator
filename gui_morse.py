@@ -16,7 +16,7 @@ class MorseApp:
         self.input_entry.grid(row=0, column=1, padx=6, pady=6)
 
         # Convert button
-        self.convert_btn = tk.Button(root, text="Convertir", command=self.convert)
+        self.convert_btn = tk.Button(root, text="Convert", command=self.convert)
         self.convert_btn.grid(row=0, column=2, padx=6)
 
         # Morse output
