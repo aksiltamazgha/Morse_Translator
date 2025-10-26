@@ -1,4 +1,4 @@
-## Morse Translator — Guide (English)
+## Morse Translator — Guide
 
 This is a small Python application that converts text to Morse code, plays the resulting audio, and saves the audio as a WAV file.
 
