@@ -1,63 +1,71 @@
- # Morse Code GUI — guide d'utilisation
+## Morse Translator — Guide (English)
 
-Ce dépôt contient une petite application Python qui convertit du texte en code Morse, permet d'écouter le résultat et d'enregistrer l'audio au format WAV.
+This is a small Python application that converts text to Morse code, plays the resulting audio, and saves the audio as a WAV file.
 
-Pourquoi WAV ?
-- L'export MP3 a été volontairement retiré pour simplifier l'installation (pas de dépendance à ffmpeg). WAV est un format simple, sans compression, facile à générer et à lire.
+Principles and choices
+- The project generates and saves WAV files (a simple format that avoids external encoding dependencies). MP3 export was intentionally removed to avoid requiring ffmpeg.
 
-Contenu du dépôt
-- `MORSE.py` — dictionnaire Morse et utilitaires (conversion texte → Morse, fonctions de son basiques).
-- `audio_utils.py` — génération du signal audio (numpy), lecture via le système (winsound / ffplay / afplay / aplay) et sauvegarde WAV.
-- `gui_morse.py` — interface Tkinter : saisie, conversion, lecture et enregistrement WAV.
-- `requirements.txt` — dépendances minimales (numpy).
+Repository contents
+- `MORSE.py` — Morse dictionary and utility functions: text → Morse conversion and a simple beep-based playback.
+- `audio_utils.py` — audio signal generation using `numpy`, system playback backends (winsound/ffplay/afplay/aplay) and WAV saving.
+- `gui_morse.py` — Tkinter GUI: text input, conversion, playback and WAV export.
+- `requirements.txt` — minimal dependencies (at least `numpy`).
 
-Prérequis
-- Python 3.8 ou supérieur (compatible avec Python 3.13).
-- `numpy` (installer via `requirements.txt`).
-- Sur Windows, la lecture fonctionne sans installation supplémentaire (utilise `winsound`).
-- Sur macOS/Linux, la lecture tente d'utiliser `afplay` (macOS), `aplay` (Linux) ou `ffplay` (si ffmpeg est installé).
+Prerequisites
+- Python 3.8 or newer.
+- Install dependencies: `numpy`.
+- On Windows the playback uses `winsound` (included with Python). On macOS/Linux the application attempts to use `afplay`/`aplay` or `ffplay` (from ffmpeg) if available.
 
-Installation
-1. Ouvre PowerShell dans le dossier du projet (ex. `C:\Users\Dell\Desktop\DL\MORSE_CODE`).
-2. Installe la dépendance :
+Installation (PowerShell)
 
 ```powershell
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Lancer l'interface
+Run the GUI
 
 ```powershell
 python gui_morse.py
 ```
 
-Utilisation (interface)
-- Saisis ton texte dans "Texte à convertir" puis clique `Convertir`.
-- Clique `Jouer` pour écouter le Morse.
-- Clique `Enregistrer WAV` pour sauvegarder le fichier `.wav` (aucun ffmpeg requis).
+Usage examples
 
-Générer un WAV depuis la ligne de commande
+- Convert text and play in the UI: open `gui_morse.py`, enter text, click "Convert" then "Play".
+- Save a WAV from the UI: after conversion click "Save WAV" and choose a path.
+- Generate a WAV from the command line:
 
 ```powershell
 python - <<'PY'
-from audio_utils import morse_to_wave_array, save_wave_array_as_wav
 from MORSE import text_to_morse
+from audio_utils import morse_to_wave_array, save_wave_array_as_wav
 
 text = 'SOS'
 morse = text_to_morse(text)
 arr, sr = morse_to_wave_array(morse)
 save_wave_array_as_wav('morse_output.wav', arr, sr)
-print('morse_output.wav créé')
+print('morse_output.wav created')
 PY
 ```
 
-Dépannage rapide
-- `Jouer` ne donne rien sous Windows : assure-toi d'exécuter le script avec la même version de Python que celle où tu as installé `numpy`.
-- Sur macOS/Linux : installe `ffmpeg` (pour `ffplay`) ou `alsa-utils` (pour `aplay`) si la lecture système n'est pas disponible.
-- Pour tout message d'erreur lors de l'enregistrement, copie le message ici et je t'aide à diagnostiquer.
+Quick troubleshooting
+- If playback does not work on Windows: make sure you are running the script with the same Python installation where `numpy` is installed.
+- On macOS/Linux: install `ffmpeg` (for `ffplay`) or `alsa-utils` (for `aplay`) if system playback is not available.
+- If you get an error while saving the WAV file, copy the error message and I will help diagnose it.
 
-Améliorations possibles
-- Réglages (fréquence, durée du point/tiret) dans l'UI.
-- Ouvrir automatiquement le dossier contenant le fichier WAV après enregistrement.
-- Réintégrer l'export MP3 (avec instructions d'installation de ffmpeg) si tu le souhaites.
+Cleanup and best practices
+- The `__pycache__` folder contains Python bytecode files and does not need to be tracked in version control. Consider adding it to a `.gitignore` file.
+- The code was checked for syntax errors using `py_compile`. To find unused imports or style issues, run a linter such as `flake8`, `pylint` or `ruff`.
+
+Possible next improvements
+- Add UI options to adjust frequency and dot/dash duration.
+- Add simple unit tests (text→Morse conversion and audio array generation).
+- Re-enable MP3 export with instructions for installing `ffmpeg`, if desired.
+
+Contact / Support
+If you'd like, I can:
+- add a basic `.gitignore`
+- add a small test script and CI hooks
+- add a command-line interface (CLI) option
+
+Tell me which next step you prefer and I'll implement it.
