@@ -9,9 +9,8 @@ class MorseApp:
     def __init__(self, root):
         self.root = root
         root.title("Morse Code GUI")
-
         # Input
-        tk.Label(root, text="Texte à convertir:").grid(row=0, column=0, sticky="w")
+        tk.Label(root, text="Text to convert:").grid(row=0, column=0, sticky="w")
         self.input_entry = tk.Entry(root, width=60)
         self.input_entry.grid(row=0, column=1, padx=6, pady=6)
 
@@ -25,14 +24,14 @@ class MorseApp:
         self.morse_text.grid(row=1, column=1, columnspan=2, padx=6, pady=6)
 
         # Control buttons
-        self.play_btn = tk.Button(root, text="Jouer", command=self.play)
+        self.play_btn = tk.Button(root, text="Play", command=self.play)
         self.play_btn.grid(row=2, column=0, pady=6)
 
         # WAV export button (no ffmpeg required)
-        self.save_wav_btn = tk.Button(root, text="Enregistrer WAV", command=self.save_wav)
+        self.save_wav_btn = tk.Button(root, text="Save WAV", command=self.save_wav)
         self.save_wav_btn.grid(row=2, column=1, pady=6, sticky="w")
 
-        self.quit_btn = tk.Button(root, text="Quitter", command=root.quit)
+        self.quit_btn = tk.Button(root, text="Quit", command=root.quit)
         self.quit_btn.grid(row=2, column=2, pady=6)
 
         self.current_morse = ""
@@ -40,7 +39,7 @@ class MorseApp:
     def convert(self):
         text = self.input_entry.get().strip()
         if not text:
-            messagebox.showinfo("Info", "Veuillez entrer du texte à convertir.")
+            messagebox.showinfo("Info", "Please enter text to convert.")
             return
         morse = text_to_morse(text)
         self.current_morse = morse
@@ -49,18 +48,18 @@ class MorseApp:
 
     def play(self):
         if not self.current_morse:
-            messagebox.showinfo("Info", "Convertissez d'abord un texte en Morse.")
+            messagebox.showinfo("Info", "Please convert text to Morse first.")
             return
         try:
             arr, sr = morse_to_wave_array(self.current_morse)
             play_wave_array(arr, sr)
         except Exception as e:
-            messagebox.showerror("Erreur", f"Impossible de jouer le son: {e}")
+            messagebox.showerror("Error", f"Unable to play audio: {e}")
     
 
     def save_wav(self):
         if not self.current_morse:
-            messagebox.showinfo("Info", "Convertissez d'abord un texte en Morse.")
+            messagebox.showinfo("Info", "Please convert text to Morse first.")
             return
         file_path = filedialog.asksaveasfilename(defaultextension=".wav",
                                                  filetypes=[("WAV files", "*.wav")])
@@ -69,9 +68,9 @@ class MorseApp:
         try:
             arr, sr = morse_to_wave_array(self.current_morse)
             save_wave_array_as_wav(file_path, arr, sr)
-            messagebox.showinfo("Succès", f"Fichier WAV enregistré:\n{file_path}")
+            messagebox.showinfo("Success", f"WAV file saved:\n{file_path}")
         except Exception as e:
-            messagebox.showerror("Erreur", f"Impossible d'enregistrer le WAV: {e}")
+            messagebox.showerror("Error", f"Unable to save WAV: {e}")
 
 
 def main():
